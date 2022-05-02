@@ -45,5 +45,24 @@ using Vec3		= XMFLOAT3;
 using Vec4		= XMFLOAT4;
 using Matrix	= XMMATRIX;
 
+enum
+{
+	SWAP_CHAIN_BUFFER_COUNT = 2
+};
 
-void HelloEngine();
+
+
+struct WindowInfo
+{
+	HWND hWnd;
+	int32 width;
+	int32 height;
+	bool windowed;
+};
+
+
+//class Engine - 전방선언
+//extern을 이용해서 전역선언 - https://docs.microsoft.com/ko-kr/cpp/cpp/extern-cpp?view=msvc-170
+extern unique_ptr<class Engine> GEngine;
+
+
