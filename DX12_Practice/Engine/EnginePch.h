@@ -54,15 +54,24 @@ enum
 
 struct WindowInfo
 {
-	HWND hWnd;
-	int32 width;
-	int32 height;
-	bool windowed;
+	HWND	hWnd; // 출력 윈도우
+	int32	width; // 너비
+	int32	height; // 높이
+	bool	windowed; // 창모드 or 전체화면
 };
 
+struct Vertex
+{
+	Vec3 pos;	//X,Y,Z
+	Vec4 color; //RGBA
+};
+
+
+#define DEVICE			GEngine->GetDevice()->GetDevice()
+#define CMD_LIST		GEngine->GetCmdQueue()->GetCmdList()
+#define ROOT_SIGNATURE	GEngine->GetRootSignature()->GetSignature()
 
 //class Engine - 전방선언
 //extern을 이용해서 전역선언 - https://docs.microsoft.com/ko-kr/cpp/cpp/extern-cpp?view=msvc-170
 extern unique_ptr<class Engine> GEngine;
-
 

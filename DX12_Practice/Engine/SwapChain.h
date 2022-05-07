@@ -25,20 +25,32 @@
 class SwapChain
 {
 public:
-	void Init(const WindowInfo& info, ComPtr<IDXGIFactory> dxgi, ComPtr<ID3D12CommandQueue> cmdQueue);
+	void Init(const WindowInfo& info, ComPtr<ID3D12Device> device, ComPtr<IDXGIFactory> dxgi, ComPtr<ID3D12CommandQueue> cmdQueue);
 	void Present();
 	void SwapIndex();
 
 	ComPtr<IDXGISwapChain> GetSwapChain() { return _swapChain; }
-	ComPtr<ID3D12Resource> GetRenderTarget(int32 index) { return _renderTargets[index]; }
+	ComPtr<ID3D12Resource> GetRenderTarget(int32 index) { return _rtvBuffer[index]; }
+	ComPtr<ID3D12Resource> GetBackRTVBuffer() { return _rtvBuffer[_backBufferIndex]; } // 현재 BackBuffer의 index를 확인
+	
+	D3D12_CPU_DESCRIPTOR_HANDLE GetBackRTV() { return _rtvHandle[_backBufferIndex]; }
 
-
-	uint32 GetCurrentBackBufferIndex() { return _backBufferIndex; } // - BackBuffer의 index 전달
-	ComPtr<ID3D12Resource> GetCurrentBackBufferResource() { return _renderTargets[_backBufferIndex]; } // 현재 BackBuffer의 index를 확인
 
 private:
-	ComPtr<IDXGISwapChain>	_swapChain;
-	ComPtr<ID3D12Resource>	_renderTargets[SWAP_CHAIN_BUFFER_COUNT];
-	uint32					_backBufferIndex = 0;
-};
+	void CreateSwapChain(const WindowInfo& info, ComPtr<IDXGIFactory> dxgi, ComPtr<ID3D12CommandQueue> cmdQueue);
+	void CreateRTV(ComPtr<ID3D12Device> device);
 
+
+private:
+	ComPtr<IDXGISwapChain>			_swapChain;
+	// IDXGISwapChain
+	// - DirectX에서 교환 사슬을 대표하는 인터페이스
+	// - 전면 버퍼 텍스처와 후면 버퍼 텍스처를 담는다
+	// - 
+
+	ComPtr<ID3D12Resource>			_rtvBuffer[SWAP_CHAIN_BUFFER_COUNT];
+	ComPtr<ID3D12DescriptorHeap>	_rtvHeap;
+	D3D12_CPU_DESCRIPTOR_HANDLE		_rtvHandle[SWAP_CHAIN_BUFFER_COUNT];
+
+	uint32							_backBufferIndex = 0;
+};

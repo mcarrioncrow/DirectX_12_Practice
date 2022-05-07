@@ -3,7 +3,6 @@
 
 //프리컴파일 헤더 추가
 #include "pch.h"
-
 #include "framework.h"
 #include "Client.h"
 #include "Game.h"
@@ -57,8 +56,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     //Game 생성
     //Game* game = new Game();
     unique_ptr<Game> game = make_unique<Game>();    //스마트 포인터 https://docs.microsoft.com/ko-kr/cpp/cpp/smart-pointers-modern-cpp?view=msvc-170
-
     game->Init(GWindowInfo);       //초기화
+
 
 
 
