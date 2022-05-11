@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CommandQueue.h"
 #include "SwapChain.h"
+#include "Engine.h"
+
+
 
 CommandQueue::~CommandQueue()
 {
@@ -43,7 +46,6 @@ void CommandQueue::WaitSync()
 	// Advance the fence value to mark commands up to this fence point.
 	_fenceValue++;
 
-
 	// Add an instruction to the command queue to set a new fence point.  Because we 
 	// are on the GPU timeline, the new fence point won't be set until the GPU finishes
 	// processing all the commands prior to this Signal().
@@ -72,9 +74,13 @@ void CommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
 		D3D12_RESOURCE_STATE_PRESENT,			// 화면 출력
 		D3D12_RESOURCE_STATE_RENDER_TARGET);	// 외주 결과물
 
+	_cmdList->SetGraphicsRootSignature(ROOT_SIGNATURE.Get());
+	// rootsignature Get
+	// - 서명을 활용하겠다는 선언
+
+	GEngine->GetCB()->Clear();
+
 	_cmdList->ResourceBarrier(1, &barrier);
-
-
 
 	// Set the viewport and scissor rect.  This needs to be reset whenever the command list is reset.
 	_cmdList->RSSetViewports(1, vp);

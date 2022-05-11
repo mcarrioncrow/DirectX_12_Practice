@@ -6,11 +6,15 @@
 #include "Device.h"
 #include "CommandQueue.h"
 #include "SwapChain.h"
-#include "RootSignature.h"
 
 #include "Mesh.h"
 #include "Shader.h"
-//header에 header는 별조 좋지 않지만, 자주 바뀌고 양이 방대한 양이 아니기 때문에 사용해도 큰 문제가 없다
+
+#include "RootSignature.h"
+#include "ConstantBuffer.h"
+
+//header에 header는 별조 좋지 않지만
+//자주 바뀌고 양이 방대한 양이 아니기 때문에 사용해도 큰 문제가 없는듯하다
 
 
 
@@ -31,7 +35,7 @@ public:
 	shared_ptr<CommandQueue>	GetCmdQueue() { return _cmdQueue; }
 	shared_ptr<SwapChain>		GetSwapChain() { return _swapChain; }
 	shared_ptr<RootSignature>	GetRootSignature() { return _rootSignature; }
-
+	shared_ptr<ConstantBuffer>	GetCB() { return _cb; }
 
 private:
 	//화면 관련 
@@ -44,5 +48,7 @@ private:
 	shared_ptr<CommandQueue>		_cmdQueue;
 	shared_ptr<SwapChain>			_swapChain;
 	shared_ptr<RootSignature>		_rootSignature;
+	shared_ptr<ConstantBuffer>		_cb;
+
 };
 

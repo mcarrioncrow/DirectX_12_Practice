@@ -14,18 +14,22 @@ void Engine::Init(const WindowInfo& info)
 
 
 
-	//장치 관련?
+	// Shader_Ptr 선언
 	_device			= make_shared<Device>();
 	_cmdQueue		= make_shared<CommandQueue>();
 	_swapChain		= make_shared<SwapChain>();
 	_rootSignature	= make_shared<RootSignature>();
-
+	_cb				= make_shared<ConstantBuffer>();
 
 	_device->Init();
 	_cmdQueue->Init(_device->GetDevice(), _swapChain);
 	_swapChain->Init(info, _device->GetDevice(), _device->GetDXGI(), _cmdQueue->GetCmdQueue());
 	_rootSignature->Init(_device->GetDevice());
 
+	_cb->Init(sizeof(Transform), 256);
+	// ConstantBuffer
+	// - 임시 Transform
+	// - 256
 }
 
 void Engine::Render()
@@ -56,6 +60,5 @@ void Engine::ResizeWindow(int32 width, int32 height)
 	RECT rect = { 0, 0, width, height};
 	::AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);		//AdjustWindowRect??? (Window API)return bool - https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-adjustwindowrect
 	::SetWindowPos(_info.hWnd, 0, 100, 100, width, height, 0);	
-
 
 }

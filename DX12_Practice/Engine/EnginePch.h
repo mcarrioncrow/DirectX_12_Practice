@@ -1,6 +1,5 @@
 #pragma once
 
-
 //..include
 #include <windows.h>
 #include <tchar.h>
@@ -45,11 +44,16 @@ using Vec3		= XMFLOAT3;
 using Vec4		= XMFLOAT4;
 using Matrix	= XMMATRIX;
 
+
 enum
 {
 	SWAP_CHAIN_BUFFER_COUNT = 2
 };
 
+
+#define DEVICE			GEngine->GetDevice()->GetDevice()
+#define CMD_LIST		GEngine->GetCmdQueue()->GetCmdList()
+#define ROOT_SIGNATURE	GEngine->GetRootSignature()->GetSignature()
 
 
 struct WindowInfo
@@ -66,10 +70,12 @@ struct Vertex
 	Vec4 color; //RGBA
 };
 
+struct Transform
+{
+	Vec4 offset;
+};
 
-#define DEVICE			GEngine->GetDevice()->GetDevice()
-#define CMD_LIST		GEngine->GetCmdQueue()->GetCmdList()
-#define ROOT_SIGNATURE	GEngine->GetRootSignature()->GetSignature()
+
 
 //class Engine - 전방선언
 //extern을 이용해서 전역선언 - https://docs.microsoft.com/ko-kr/cpp/cpp/extern-cpp?view=msvc-170

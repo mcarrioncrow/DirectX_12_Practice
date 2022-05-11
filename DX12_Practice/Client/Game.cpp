@@ -22,6 +22,7 @@ void Game::Init(const WindowInfo& info)
 	mesh->Init(vec);
 
 	shader->Init(L"..\\Resource\\Shader\\default.hlsli");
+	//추후 수정 필요
 
 	GEngine->GetCmdQueue()->WaitSync();
 }
@@ -31,7 +32,22 @@ void Game::Update()
 	GEngine->RenderBegin();
 
 	shader->Update();
-	mesh->Render();
+	{
+		Transform t;
+		t.offset = Vec4(0.f, 0.75f, 0.f, 0.f);
+		mesh->SetTransform(t);
+
+		mesh->Render();
+	}
+
+	{
+		Transform t;
+		t.offset = Vec4(0.75f, 0.f, 0.f, 0.f);
+		mesh->SetTransform(t);
+
+		mesh->Render();
+	}
+
 
 	GEngine->RenderEnd();
 }
