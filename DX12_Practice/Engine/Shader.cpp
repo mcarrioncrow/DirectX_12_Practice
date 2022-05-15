@@ -4,6 +4,8 @@
 
 void Shader::Init(const wstring& path)
 {
+	// 경로의 HLSL파일을 전달받아 어떻게 사용할지 확인
+
 	CreateVertexShader(path, "VS_Main", "vs_5_0");
 	CreatePixelShader(path, "PS_Main", "ps_5_0");
 
@@ -13,18 +15,19 @@ void Shader::Init(const wstring& path)
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
-	_pipelineDesc.InputLayout = { desc, _countof(desc) };
-	_pipelineDesc.pRootSignature = ROOT_SIGNATURE.Get();
+	_pipelineDesc.InputLayout						= { desc, _countof(desc) };
+	_pipelineDesc.pRootSignature					= ROOT_SIGNATURE.Get();
 
-	_pipelineDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	_pipelineDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-	_pipelineDesc.DepthStencilState.DepthEnable = FALSE;
-	_pipelineDesc.DepthStencilState.StencilEnable = FALSE;
-	_pipelineDesc.SampleMask = UINT_MAX;
-	_pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	_pipelineDesc.NumRenderTargets = 1;
-	_pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-	_pipelineDesc.SampleDesc.Count = 1;
+	_pipelineDesc.RasterizerState					= CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	_pipelineDesc.BlendState						= CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+	_pipelineDesc.DepthStencilState.DepthEnable		= FALSE;
+	_pipelineDesc.DepthStencilState.StencilEnable	= FALSE;
+	_pipelineDesc.SampleMask						= UINT_MAX;
+	_pipelineDesc.PrimitiveTopologyType				= D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	_pipelineDesc.NumRenderTargets					= 1;
+	_pipelineDesc.RTVFormats[0]						= DXGI_FORMAT_R8G8B8A8_UNORM;
+	_pipelineDesc.SampleDesc.Count					= 1;
+
 
 	DEVICE->CreateGraphicsPipelineState(&_pipelineDesc, IID_PPV_ARGS(&_pipelineState));
 }

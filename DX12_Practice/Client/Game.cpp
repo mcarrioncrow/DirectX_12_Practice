@@ -12,6 +12,10 @@ void Game::Init(const WindowInfo& info)
 {
 	GEngine->Init(info);
 
+
+	
+	#pragma region Tri
+	//삼각형의 Vertex선언
 	vector<Vertex> vec(3);
 	vec[0].pos = Vec3(0.f, 0.5f, 0.5f);
 	vec[0].color = Vec4(1.f, 0.f, 0.f, 1.f);
@@ -20,7 +24,11 @@ void Game::Init(const WindowInfo& info)
 	vec[2].pos = Vec3(-0.5f, -0.5f, 0.5f);
 	vec[2].color = Vec4(0.f, 0.f, 1.f, 1.f);
 	mesh->Init(vec);
+	#pragma endregion
 
+
+
+	// HLSL 파일을 불러온다
 	shader->Init(L"..\\Resource\\Shader\\default.hlsli");
 	//추후 수정 필요
 
@@ -32,6 +40,7 @@ void Game::Update()
 	GEngine->RenderBegin();
 
 	shader->Update();
+
 	{
 		Transform t;
 		t.offset = Vec4(0.f, 0.75f, 0.f, 0.f);

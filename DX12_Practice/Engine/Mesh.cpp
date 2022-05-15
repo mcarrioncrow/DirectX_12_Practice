@@ -28,21 +28,30 @@ void Mesh::Init(vector<Vertex>& vec)
 	_vertexBuffer->Unmap(0, nullptr);
 
 	// Initialize the vertex buffer view.
-	_vertexBufferView.BufferLocation = _vertexBuffer->GetGPUVirtualAddress();
-	_vertexBufferView.StrideInBytes = sizeof(Vertex); // 정점 1개 크기
-	_vertexBufferView.SizeInBytes = bufferSize; // 버퍼의 크기	
+	_vertexBufferView.BufferLocation	= _vertexBuffer->GetGPUVirtualAddress();
+	_vertexBufferView.StrideInBytes		= sizeof(Vertex); // 정점 1개 크기
+	_vertexBufferView.SizeInBytes		= bufferSize; // 버퍼의 크기	
 }
 
 void Mesh::Render()
 {
-	CMD_LIST->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// CommandQueue에 일감 던지기??
+	CMD_LIST->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);		// TRIANGLELIST 3정점을 삼각형으로 인지
 	CMD_LIST->IASetVertexBuffers(0, 1, &_vertexBufferView); // Slot: (0~15)
 
 	//TODO
 	// - Buffer에 데이터 세팅
 	//CMD_LIST->SetGraphicsRootConstantBufferView();
-	GEngine->GetCB()->PushData(0, &_transform, sizeof(_transform));
-	GEngine->GetCB()->PushData(1, &_transform, sizeof(_transform));
+	{
+		D3D12_CPU_DESCRIPTOR_HANDLE handle = GEngine->GetCB()->PushData(0, &_transform, sizeof(_transform));
+		GEngine->GetTableDescHeap()->SetCBV(handle, CBV_REGISTER::b0);
+	}
+	{
+		D3D12_CPU_DESCRIPTOR_HANDLE handle = GEngine->GetCB()->PushData(0, &_transform, sizeof(_transform));
+		GEngine->GetTableDescHeap()->SetCBV(handle, CBV_REGISTER::b1);
+	}
+	
+	GEngine->GetTableDescHeap()->CommitTable();
 
 	CMD_LIST->DrawInstanced(_vertexCount, 1, 0, 0);
 }

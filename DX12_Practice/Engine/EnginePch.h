@@ -44,11 +44,26 @@ using Vec3		= XMFLOAT3;
 using Vec4		= XMFLOAT4;
 using Matrix	= XMMATRIX;
 
+//ConstantBufferView 관리를 위한 enum Class
+enum class CBV_REGISTER
+{
+	b0,
+	b1,
+	b2,
+	b3,
+	b4,
+
+	END
+};
 
 enum
 {
-	SWAP_CHAIN_BUFFER_COUNT = 2
+	SWAP_CHAIN_BUFFER_COUNT = 2,
+
+	CBV_REGISTER_COUNT = CBV_REGISTER::END,
+	REGISTER_COUNT = CBV_REGISTER::END
 };
+
 
 
 #define DEVICE			GEngine->GetDevice()->GetDevice()

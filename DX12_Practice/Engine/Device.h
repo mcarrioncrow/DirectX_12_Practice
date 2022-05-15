@@ -21,5 +21,8 @@ private:
 	ComPtr<IDXGIFactory>	_dxgi;			//화면 관련 기능
 	ComPtr<ID3D12Device>	_device;		//각종 객체 생성
 
+	// 해당 부분에서 _device를 왜 만드는지 이해를 하고 넘어가야 이후 왜 device를 받는지 이해할듯하다
+
+
 };
 

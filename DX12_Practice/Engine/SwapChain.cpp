@@ -8,19 +8,12 @@ void SwapChain::Init(const WindowInfo& info, ComPtr<ID3D12Device> device, ComPtr
 	CreateRTV(device);
 }
 
-void SwapChain::Present()
-{
-	// Present the frame.
-	_swapChain->Present(0, 0);
-}
-
 void SwapChain::CreateSwapChain(const WindowInfo& info, ComPtr<IDXGIFactory> dxgi, ComPtr<ID3D12CommandQueue> cmdQueue)
 {
 	// 이전에 만든 정보 날린다
 	_swapChain.Reset();
 
-
-	//보이는 화면과 같은 
+	#pragma region DXGI_SWAP_CHAIN_DESC
 	DXGI_SWAP_CHAIN_DESC sd;
 	sd.BufferDesc.Width = static_cast<uint32>(info.width); // 버퍼의 해상도 너비
 	sd.BufferDesc.Height = static_cast<uint32>(info.height); // 버퍼의 해상도 높이
@@ -37,13 +30,26 @@ void SwapChain::CreateSwapChain(const WindowInfo& info, ComPtr<IDXGIFactory> dxg
 	sd.Windowed = info.windowed;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; // 전면 후면 버퍼 교체 시 이전 프레임 정보 버림
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	#pragma endregion
 
+
+	// SWAP_CHAIN_BUFFER_COUNT 만큼 Buffer를 생성
 	dxgi->CreateSwapChain(cmdQueue.Get(), &sd, &_swapChain);
 
 	for (int32 i = 0; i < SWAP_CHAIN_BUFFER_COUNT; i++)
 		_swapChain->GetBuffer(i, IID_PPV_ARGS(&_rtvBuffer[i]));
 }
 
+
+// Presenting(제시)
+// 후면 버퍼와 전면 버퍼의 역할을 교환해서 페이지가 전환되게 하는 것을 Direct3D에서는 제시(Presenting)라고 부른다.
+// DX12 108p
+
+void SwapChain::Present()
+{
+	// Present the frame.
+	_swapChain->Present(0, 0);
+}
 
 void SwapChain::SwapIndex()
 {
