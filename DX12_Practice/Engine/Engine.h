@@ -9,6 +9,7 @@
 
 #include "Mesh.h"
 #include "Shader.h"
+#include "Texture.h"
 
 #include "RootSignature.h"
 #include "ConstantBuffer.h"

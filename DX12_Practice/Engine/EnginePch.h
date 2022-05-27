@@ -1,5 +1,8 @@
 #pragma once
 
+
+#define _HAS_STD_BYTE 0
+
 //..include
 #include <windows.h>
 #include <tchar.h>
@@ -10,6 +13,9 @@
 #include <list>
 #include <map>
 using namespace std;
+
+#include <filesystem>
+namespace fs = std::filesystem;
 
 //DirectX
 #include "d3dx12.h"
@@ -23,6 +29,13 @@ using namespace std;
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 using namespace Microsoft::WRL;
+
+
+// - Texture Mapping
+
+#include <DirectXTex/DirectXTex.h>
+#include <DirectXTex/DirectXTex.inl>
+
 
 //..lib
 #pragma comment(lib, "d3d12")
@@ -45,7 +58,7 @@ using Vec4		= XMFLOAT4;
 using Matrix	= XMMATRIX;
 
 //ConstantBufferView 관리를 위한 enum Class
-enum class CBV_REGISTER
+enum class CBV_REGISTER : uint8
 {
 	b0,
 	b1,
@@ -56,19 +69,33 @@ enum class CBV_REGISTER
 	END
 };
 
+enum class SRV_REGISTER : uint8
+{
+	t0 = static_cast<uint8>(CBV_REGISTER::END),
+	t1,
+	t2,
+	t3,
+	t4,
+
+	END
+};
+
 enum
 {
 	SWAP_CHAIN_BUFFER_COUNT = 2,
 
 	CBV_REGISTER_COUNT = CBV_REGISTER::END,
+	SRV_REGISTER_COUNT = SRV_REGISTER::END,
 	REGISTER_COUNT = CBV_REGISTER::END
+
 };
 
 
 
-#define DEVICE			GEngine->GetDevice()->GetDevice()
-#define CMD_LIST		GEngine->GetCmdQueue()->GetCmdList()
-#define ROOT_SIGNATURE	GEngine->GetRootSignature()->GetSignature()
+#define DEVICE				GEngine->GetDevice()->GetDevice()
+#define CMD_LIST			GEngine->GetCmdQueue()->GetCmdList()
+#define RESOURCE_CMD_LIST	GEngine->GetCmdQueue()->GetCmdList()
+#define ROOT_SIGNATURE		GEngine->GetRootSignature()->GetSignature()
 
 
 struct WindowInfo
@@ -83,6 +110,7 @@ struct Vertex
 {
 	Vec3 pos;	//X,Y,Z
 	Vec4 color; //RGBA
+	Vec2 uv;
 };
 
 struct Transform

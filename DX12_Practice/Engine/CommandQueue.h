@@ -15,6 +15,8 @@ public:
 	void RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect);
 	void RenderEnd();
 
+	void FlushResourceCommandQueue();
+
 	ComPtr<ID3D12CommandQueue> GetCmdQueue() { return _cmdQueue; }
 	ComPtr<ID3D12GraphicsCommandList> GetCmdList() { return	_cmdList; }
 
@@ -24,6 +26,10 @@ private:
 	ComPtr<ID3D12CommandQueue>			_cmdQueue;
 	ComPtr<ID3D12CommandAllocator>		_cmdAlloc;
 	ComPtr<ID3D12GraphicsCommandList>	_cmdList;	//상당히 자주 사용예정
+
+
+	ComPtr<ID3D12CommandAllocator>		_resCmdAlloc;
+	ComPtr<ID3D12GraphicsCommandList>	_resCmdList;
 
 	//fence??
 	// - cpu와 Gpu 동기화를 위한 도구

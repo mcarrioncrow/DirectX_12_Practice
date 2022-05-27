@@ -1,5 +1,5 @@
 #pragma once
 
-#include "EnginePch.h"
+#pragma comment(lib, "Engine.lib")
 
-using namespace std;
+#include "EnginePch.h"
